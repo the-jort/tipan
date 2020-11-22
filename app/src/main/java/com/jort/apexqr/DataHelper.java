@@ -57,7 +57,6 @@ public class DataHelper extends SQLiteOpenHelper {
         cv.put(COL_DATA_EMPLOYEE_NAME, dataModel.getEmployeeName());
         cv.put(COL_DATA_EMPLOYEE_STATUS,dataModel.getEmployeeStatus());
 
-
         //ColumnHack is just null but can be any String if you enter an empty row
         long insert = db.insert(DATA_TABLE, null, cv);
 

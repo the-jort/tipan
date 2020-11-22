@@ -62,10 +62,10 @@ public class Setup extends AppCompatActivity {
 
                 boolean addResult = setupHelper.createSetup(setupModel);
                 if (addResult) {
-                    Toast.makeText(Setup.this, "Record saved.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Setup.this, "Setup saved.", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(Setup.this, "Saving failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Setup.this, "Saving setup failed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

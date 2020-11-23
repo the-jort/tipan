@@ -7,14 +7,16 @@ public class SetupModel {
     String userName;
     String userPassword;
     String deviceId;
+    String lastUpdate;
 
-    public SetupModel(String serverAddress, String portNumber, String databaseName, String userName, String userPassword, String deviceId) {
+    public SetupModel(String serverAddress, String portNumber, String databaseName, String userName, String userPassword, String deviceId, String lastUpdate) {
         this.serverAddress = serverAddress;
         this.portNumber = portNumber;
         this.databaseName = databaseName;
         this.userName = userName;
         this.userPassword = userPassword;
         this.deviceId = deviceId;
+        this.lastUpdate = lastUpdate;
     }
 
     @Override
@@ -26,8 +28,13 @@ public class SetupModel {
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
                 ", deviceId='" + deviceId + '\'' +
+                ", lastUpdate='" + lastUpdate + '\'' +
                 '}';
     }
+
+    public String getLastUpdate() { return lastUpdate;}
+
+    public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate;}
 
     public String getServerAddress() {
         return serverAddress;

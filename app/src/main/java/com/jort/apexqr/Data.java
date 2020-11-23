@@ -1,8 +1,11 @@
 package com.jort.apexqr;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -11,10 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class Data extends AppCompatActivity {
 
@@ -32,8 +41,9 @@ public class Data extends AppCompatActivity {
     private static String userName;
     private static String userPassword;
     private static String serverUrl;
+    private static String deviceId;
     private Connection connection = null;
-    String availableUpdateDate = "";
+    private String availableUpdateDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +63,13 @@ public class Data extends AppCompatActivity {
         if (setupCursor.getCount() > 0) {
             setupCursor.moveToFirst();
             try {
+                deviceId = setupCursor.getString(0);
                 ipAddress = setupCursor.getString(1);
                 portNumber = setupCursor.getString(2);
                 databaseName = setupCursor.getString(3);
                 userName = setupCursor.getString(4);
                 userPassword = setupCursor.getString(5);
+                tv_lastUpdate.setText(setupCursor.getString(6).toString());
                 serverUrl = "jdbc:jtds:sqlserver://" + ipAddress + ":" + portNumber + "/" + databaseName;
 
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -75,11 +87,15 @@ public class Data extends AppCompatActivity {
                             availableUpdateDate = resultSet.getString(1);
                             //Toast.makeText(Data.this, serverUrl + resultSet.getString(1), Toast.LENGTH_LONG).show();
                         }
-                        if (tv_lastUpdate.getText().toString() != availableUpdateDate) {
-                            tv_availableUpdate.setText("Server was updated on " + availableUpdateDate);
+
+                        System.out.println("Server =*" + availableUpdateDate + "* vs Local =*" + tv_lastUpdate.getText().toString() + "*");
+                        if (tv_lastUpdate.getText().toString().trim().equals(availableUpdateDate)) {
+                            tv_availableUpdate.setText("No available update");
+                            btn_getUpdate.setVisibility(View.INVISIBLE);
                         }
                         else {
-                            tv_availableUpdate.setText("No available update");
+                            tv_availableUpdate.setText("Server was updated on " + availableUpdateDate);
+                            btn_getUpdate.setVisibility(View.VISIBLE);
                         }
                     }
                     catch (SQLException e) {
@@ -94,13 +110,7 @@ public class Data extends AppCompatActivity {
                 tv_availableUpdate.setText("Connection is empty");
                 e.printStackTrace();
             }
-            try {
-                tv_lastUpdate.setText(setupCursor.getString(6).toString());
-            }
-            catch (Exception e) {
-                tv_lastUpdate.setText("NOT INITIALIZED");
-                e.printStackTrace();
-            }
+
         }
 
         //Fetch total numbers of employees in local storage
@@ -117,6 +127,13 @@ public class Data extends AppCompatActivity {
             public void onClick(View view) {
                 //Connect to MS SQL Server and download records then add to DATA_TABLE
                 if (connection != null) {
+
+                    //Get the current date
+//                    java.util.Date date = new java.util.Date();
+//                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+//                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+//                    availableUpdateDate = dateFormat.format(sqlDate);
+
                     Statement statement = null;
                     try {
                         //dataHelper = new DataHelper(Data.this);
@@ -139,10 +156,10 @@ public class Data extends AppCompatActivity {
                         }
 
                         //Update the date on local DB
-                        //setupHelper.updateSetup(availableUpdateDate);
-                        //tv_lastUpdate.setText(availableUpdateDate);
-                        //tv_totalNumber.setText(rowCount);
-                        Toast.makeText(Data.this, rowCount + " rows added.", Toast.LENGTH_LONG);
+                        setupHelper.updateSetup(deviceId, availableUpdateDate);
+                        Toast.makeText(Data.this, "Local database updated.", Toast.LENGTH_LONG);
+
+                        finish();
                     }
                     catch (SQLException e) {
                         e.printStackTrace();

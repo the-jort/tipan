@@ -37,7 +37,7 @@ public class SetupHelper extends SQLiteOpenHelper {
         String createTableStatement;
         createTableStatement = "CREATE TABLE " + SETUP_TABLE + " (" + COL_SETUP_DEVICE_ID + " TEXT, " +
                 COL_SETUP_ADDRESS + " TEXT, " + COL_SETUP_PORT + " TEXT, " + COL_SETUP_DATABASE + " TEXT, " +
-                COL_SETUP_USERNAME + " TEXT, " + COL_SETUP_PASSWORD + " TEXT, " + COL_SETUP_LAST_UPDATE + " DATE)";
+                COL_SETUP_USERNAME + " TEXT, " + COL_SETUP_PASSWORD + " TEXT, " + COL_SETUP_LAST_UPDATE + " TEXT)";
         db.execSQL(createTableStatement);
         createTableStatement = "CREATE TABLE " + DATA_TABLE + " (" + COL_DATA_EMPLOYEE_ID + " TEXT, " +
                 COL_DATA_EMPLOYEE_NAME + " TEXT, " + COL_DATA_EMPLOYEE_STATUS + " TEXT)";
@@ -61,6 +61,7 @@ public class SetupHelper extends SQLiteOpenHelper {
         cv.put(COL_SETUP_USERNAME,setupModel.getUserName());
         cv.put(COL_SETUP_PASSWORD,setupModel.getUserPassword());
         cv.put(COL_SETUP_DEVICE_ID,setupModel.getDeviceId());
+        cv.put(COL_SETUP_LAST_UPDATE,"1/1/2020");
 
         //ColumnHack is just null but can be any String if you enter an empty row
         long insert = db.insert(SETUP_TABLE, null, cv);
@@ -93,4 +94,11 @@ public class SetupHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public void updateSetup(String deviceId, String sDate) {
+        //Opening a database and LOCK it
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Values with Keys
+        db.execSQL("UPDATE " + SETUP_TABLE + " SET " + COL_SETUP_LAST_UPDATE + "='" + sDate + "' WHERE " + COL_SETUP_DEVICE_ID + "='" + deviceId + "'");
+        System.out.println("Updated");
+    }
 }

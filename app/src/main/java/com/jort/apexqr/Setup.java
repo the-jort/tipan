@@ -58,7 +58,7 @@ public class Setup extends AppCompatActivity {
                 //Toast.makeText(Setup.this, "Record count" + count, Toast.LENGTH_SHORT).show();
 
                 setupModel = new SetupModel(et_serverAddress.getText().toString(), et_portNumber.getText().toString(),
-                        et_databaseName.getText().toString(), et_userName.getText().toString(), et_password.getText().toString(), tv_deviceId.getText().toString());
+                        et_databaseName.getText().toString(), et_userName.getText().toString(), et_password.getText().toString(), tv_deviceId.getText().toString(), "1/1/2020");
 
                 boolean addResult = setupHelper.createSetup(setupModel);
                 if (addResult) {

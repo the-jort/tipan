@@ -28,6 +28,15 @@ public class SetupHelper extends SQLiteOpenHelper {
     public static final String COL_DATA_EMPLOYEE_NAME = "EMPLOYEE_NAME";
     public static final String COL_DATA_EMPLOYEE_STATUS = "EMPLOYEE_STATUS"; //Allowed or Not Allowed
 
+    public static final String LOG_TABLE = "LOG_TABLE";
+    public static final String COL_LOG_EMPLOYEE_ID = "EMPLOYEE_ID";
+    public static final String COL_LOG_EMPLOYEE_NAME = "EMPLOYEE_NAME";
+    public static final String COL_LOG_EMPLOYEE_STATUS = "EMPLOYEE_STATUS"; //Allowed or Not Allowed
+    public static final String COL_LOG_STATUS = "LOG_STATUS"; //Accept or Deny
+    public static final String COL_LOG_DATE = "LOG_DATE";
+    public static final String COL_LOG_TIME = "LOG_TIME";
+    public static final String COL_LOG_DEVICE_ID = "DEVICE_ID";
+
     public SetupHelper(@Nullable Context context) {
         super(context, "apex_qr_code.db", null, 1);
     }
@@ -35,12 +44,21 @@ public class SetupHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement;
+        //Creating SETUP_TABLE
         createTableStatement = "CREATE TABLE " + SETUP_TABLE + " (" + COL_SETUP_DEVICE_ID + " TEXT, " +
                 COL_SETUP_ADDRESS + " TEXT, " + COL_SETUP_PORT + " TEXT, " + COL_SETUP_DATABASE + " TEXT, " +
                 COL_SETUP_USERNAME + " TEXT, " + COL_SETUP_PASSWORD + " TEXT, " + COL_SETUP_LAST_UPDATE + " TEXT)";
         db.execSQL(createTableStatement);
+
+        //Creating DATA_TABLE
         createTableStatement = "CREATE TABLE " + DATA_TABLE + " (" + COL_DATA_EMPLOYEE_ID + " TEXT, " +
                 COL_DATA_EMPLOYEE_NAME + " TEXT, " + COL_DATA_EMPLOYEE_STATUS + " TEXT)";
+        db.execSQL(createTableStatement);
+
+        //Creating LOG_TABLE
+        createTableStatement = "CREATE TABLE " + LOG_TABLE + " (" + COL_LOG_EMPLOYEE_ID + " TEXT, " +
+                COL_LOG_EMPLOYEE_NAME + " TEXT, " + COL_LOG_EMPLOYEE_STATUS + " TEXT, " + COL_LOG_STATUS + " TEXT, " +
+                COL_LOG_DATE + " TEXT, " + COL_LOG_TIME + " TEXT, " + COL_LOG_DEVICE_ID + " TEXT)";
         db.execSQL(createTableStatement);
     }
 

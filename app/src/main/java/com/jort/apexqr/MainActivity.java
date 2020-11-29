@@ -1,9 +1,13 @@
 package com.jort.apexqr;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -27,14 +31,17 @@ public class MainActivity extends AppCompatActivity {
         cv_scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "SCAN", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, Scan.class);
+                startActivity(intent);
+                //Toast.makeText(MainActivity.this, "SCAN", Toast.LENGTH_SHORT).show();
             }
         });
 
         cv_logs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "LOGS", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, Logs.class));
+                //Toast.makeText(MainActivity.this, "LOGS", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -56,4 +63,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

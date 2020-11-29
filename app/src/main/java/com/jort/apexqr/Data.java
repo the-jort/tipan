@@ -31,7 +31,6 @@ public class Data extends AppCompatActivity {
     TextView tv_lastUpdate, tv_totalNumber, tv_availableUpdate;
 
     SetupHelper setupHelper;
-    DataModel dataModel;
     DataHelper dataHelper;
 
     private static String ipAddress;
@@ -91,7 +90,7 @@ public class Data extends AppCompatActivity {
                         System.out.println("Server =*" + availableUpdateDate + "* vs Local =*" + tv_lastUpdate.getText().toString() + "*");
                         if (tv_lastUpdate.getText().toString().trim().equals(availableUpdateDate)) {
                             tv_availableUpdate.setText("No available update");
-                            btn_getUpdate.setVisibility(View.INVISIBLE);
+                            btn_getUpdate.setVisibility(View.GONE);
                         }
                         else {
                             tv_availableUpdate.setText("Server was updated on " + availableUpdateDate);
@@ -99,6 +98,7 @@ public class Data extends AppCompatActivity {
                         }
                     }
                     catch (SQLException e) {
+                        tv_availableUpdate.setText("Connection is empty");
                         e.printStackTrace();
                     }
                 }
@@ -127,18 +127,8 @@ public class Data extends AppCompatActivity {
             public void onClick(View view) {
                 //Connect to MS SQL Server and download records then add to DATA_TABLE
                 if (connection != null) {
-
-                    //Get the current date
-//                    java.util.Date date = new java.util.Date();
-//                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-//                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-//                    availableUpdateDate = dateFormat.format(sqlDate);
-
                     Statement statement = null;
                     try {
-                        //dataHelper = new DataHelper(Data.this);
-                        //setupHelper = new SetupHelper(Data.this);
-
                         statement = connection.createStatement();
                         ResultSet resultSet = statement.executeQuery("SELECT * FROM TKQR_Data");
 
@@ -158,10 +148,10 @@ public class Data extends AppCompatActivity {
                         //Update the date on local DB
                         setupHelper.updateSetup(deviceId, availableUpdateDate);
                         Toast.makeText(Data.this, "Local database updated.", Toast.LENGTH_LONG);
-
+                        Thread.sleep(2000);
                         finish();
                     }
-                    catch (SQLException e) {
+                    catch (SQLException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 }

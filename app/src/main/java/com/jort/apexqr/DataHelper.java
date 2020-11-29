@@ -19,14 +19,10 @@ public class DataHelper extends SQLiteOpenHelper {
     public DataHelper(@Nullable Context context) { super(context, "apex_qr_code.db", null, 1);}
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-
-    }
+    public void onCreate(SQLiteDatabase db) { }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-    }
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) { }
 
     public int deleteData() {
         //Find customerModel in the database. If is found, delete it and return true,
@@ -43,6 +39,17 @@ public class DataHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);//Return type is cursor
+
+        return cursor;
+    }
+
+    public Cursor selectDataArgs(String empId) {
+        //Get data from the database
+        String queryString = "SELECT * FROM " + DATA_TABLE + " WHERE " + COL_DATA_EMPLOYEE_ID + " LIKE '" + empId + "%'" ;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        //Cursor cursor = db.rawQuery(queryString, new String [] {String.valueOf(empId)});//Return type is cursor
 
         return cursor;
     }

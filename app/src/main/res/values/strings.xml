@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">Apex QR</string>
+    <string name="app_name">Tipan AMCINero</string>
+    <string name="mobile_number">Your mobile number (11 digit)</string>
+    <string name="full_name">Your full name</string>
+    <string name="amcinero_appointment_app">AMCINERO Appointment App</string>
+    <string-array name="arrDepartment">
+        <item>Human Resource</item>
+        <item>Medical</item>
+        <item>Finance</item>
+        <item>ORM</item>
+        <item>IT</item>
+        <item>IMS</item>
+        <item>Legal</item>
+    </string-array>
+    <string-array name="arrEmploymentType">
+        <item>Employee</item>
+        <item>Contractor</item>
+        <item>Community Residents</item>
+        <item>Visitor</item>
+    </string-array>
 </resources>
